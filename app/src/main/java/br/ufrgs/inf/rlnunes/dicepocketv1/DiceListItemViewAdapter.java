@@ -51,6 +51,19 @@ public class DiceListItemViewAdapter extends ArrayAdapter<Dice> {
         View rowView = inflater.inflate(R.layout.dice_list_item_view, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.textView);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+        switch(dices.get(position).getnFaces()) {
+            case 20:
+                imageView.setImageResource(R.drawable.d20);
+                break;
+            case 6:
+                imageView.setImageResource(R.drawable.d6);
+                break;
+            case 4:
+                imageView.setImageResource(R.drawable.d4);
+                break;
+            default:
+                imageView.setImageResource(R.drawable.d6);                
+        }
         textView.setText(dices.get(position).toString());
 
 
