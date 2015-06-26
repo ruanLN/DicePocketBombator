@@ -22,7 +22,7 @@ public class ShowDicesDialogFragment extends DialogFragment {
         int total = 0;
         for(Dice dice : dices) {
             int val = dice.roll();
-            resultado = resultado + "Dado " + i + ":" + val +  "\n";
+            resultado = resultado + "Dado " + i + ": " + val +  "\n";
             i++;
             total += val;
         }
