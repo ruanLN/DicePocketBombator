@@ -4,14 +4,9 @@
     <string name="roll_button">Rolar Dados</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
-    <string-array name="planets_array">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
+    <string-array name="dicesArray">
+        <item>4</item>
+        <item>6</item>
+        <item>20</item>
     </string-array>
 </resources>

@@ -24,9 +24,10 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="464dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center_horizontal|top"
-            android:id="@+id/content_layout">
+            android:id="@+id/content_layout"
+            android:weightSum="1">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -42,8 +43,15 @@
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:id="@+id/">
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Adicionar Dado"
+                        android:id="@+id/buttonAddDice"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_column="0" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -51,65 +59,34 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Faces:"
                         android:id="@+id/textViewFaces"
-                        android:layout_gravity="right|top" />
+                        android:layout_gravity="right|top"
+                        android:padding="5dp"
+                        android:layout_column="1" />
 
                     <Spinner
-                        android:layout_width="wrap_content"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/spinnerNumFaces"
-                        android:layout_column="1"
-                        android:spinnerMode="dialog" />
+                        android:layout_column="7"
+                        android:spinnerMode="dialog"
+                        android:entries="@+id/dicesArray" />
 
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="Quantidade"
-                        android:id="@+id/textViewQuant"
-                        android:layout_column="0" />
-
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:ems="10"
-                        android:id="@+id/editTextQuant"
-                        android:layout_column="1" />
                 </TableRow>
 
             </TableLayout>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Adicionar Dado"
-                android:id="@+id/buttonAddDice"
-                android:layout_gravity="center_horizontal" />
-
             <ListView
                 android:layout_width="match_parent"
-                android:layout_height="242dp"
+                android:layout_height="175dp"
                 android:id="@+id/listView"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.92" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Rolar Dados"
                 android:id="@+id/buttonRollDice"
-                android:layout_gravity="center_horizontal" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Salver Perfil"
-                android:id="@+id/buttonSaveProfile"
                 android:layout_gravity="center_horizontal" />
 
         </LinearLayout>

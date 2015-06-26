@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,7 +73,7 @@ public class RollDiceActivity extends FragmentActivity {
 
     Button addDiceBtn;
     Button rollDicesBtn;
-
+    Spinner spinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +86,10 @@ public class RollDiceActivity extends FragmentActivity {
         mAccelLast = SensorManager.GRAVITY_EARTH;
 
         setContentView(R.layout.activity_roll_dice);
+
+        ArrayAdapter<String> facesadapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,getResources().getStringArray(R.array.dicesArray));
+        spinner = ((Spinner) findViewById(R.id.spinnerNumFaces));
+        spinner.setAdapter(facesadapter);
 
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.content_layout);
@@ -100,9 +105,9 @@ public class RollDiceActivity extends FragmentActivity {
         addDiceBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 int nf;
-                nf = Integer.parseInt(((EditText) findViewById(R.id.editTextFaces)).getText().toString());
+                nf = Integer.parseInt(spinner.getSelectedItem().toString());
                 int nd;
-                nd = Integer.parseInt(((EditText) findViewById(R.id.editTextQuant)).getText().toString());
+                nd = 1;
                 for (int i = 0; i < nd; i++) {
                     Dice dice = new Dice(nf);
                     dices.add(dice);
@@ -189,7 +194,7 @@ public class RollDiceActivity extends FragmentActivity {
     private void rollDices() {
         Bundle args = new Bundle();
         args.putSerializable("dices", dices);
-        if(dialog) {
+        if(dialog != null) {
 
         }
         dialog = new ShowDicesDialogFragment();
