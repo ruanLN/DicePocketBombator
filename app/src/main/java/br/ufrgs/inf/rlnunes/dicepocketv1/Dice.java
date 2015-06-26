@@ -1,11 +1,14 @@
 package br.ufrgs.inf.rlnunes.dicepocketv1;
 
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Created by Prav1 on 08/06/2015.
  */
-public class Dice {
+public class Dice implements Serializable{
     private int nFaces;
     public Dice(int nf) {
         this.nFaces = nf;

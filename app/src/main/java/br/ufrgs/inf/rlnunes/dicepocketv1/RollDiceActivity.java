@@ -4,9 +4,20 @@ import br.ufrgs.inf.rlnunes.dicepocketv1.util.SystemUiHider;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,7 +37,7 @@ import java.util.ArrayList;
  *
  * @see SystemUiHider
  */
-public class RollDiceActivity extends Activity {
+public class RollDiceActivity extends FragmentActivity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -60,9 +71,18 @@ public class RollDiceActivity extends Activity {
     private DiceListItemViewAdapter adapter;
 
     Button addDiceBtn;
+    Button rollDicesBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /* do this in onCreate */
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        mAccel = 0.00f;
+        mAccelCurrent = SensorManager.GRAVITY_EARTH;
+        mAccelLast = SensorManager.GRAVITY_EARTH;
 
         setContentView(R.layout.activity_roll_dice);
 
@@ -81,12 +101,21 @@ public class RollDiceActivity extends Activity {
             public void onClick(View v) {
                 int nf;
                 nf = Integer.parseInt(((EditText) findViewById(R.id.editTextFaces)).getText().toString());
-                Dice dice = new Dice(nf);
-                dices.add(dice);
+                int nd;
+                nd = Integer.parseInt(((EditText) findViewById(R.id.editTextQuant)).getText().toString());
+                for (int i = 0; i < nd; i++) {
+                    Dice dice = new Dice(nf);
+                    dices.add(dice);
+                }
                 adapter = new DiceListItemViewAdapter(getApplicationContext(), dices);
                 listView.setAdapter(adapter);
+            }
+        });
 
-                Toast.makeText(getApplicationContext(), "rergs", Toast.LENGTH_LONG).show();
+        rollDicesBtn = (Button) findViewById(R.id.buttonRollDice);
+        rollDicesBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                rollDices();
             }
         });
 
@@ -156,6 +185,18 @@ public class RollDiceActivity extends Activity {
         // while interacting with the UI.
         //findViewById(R.id.roll_button).setOnTouchListener(mDelayHideTouchListener);
     }
+    DialogFragment dialog;
+    private void rollDices() {
+        Bundle args = new Bundle();
+        args.putSerializable("dices", dices);
+        if(dialog) {
+
+        }
+        dialog = new ShowDicesDialogFragment();
+        dialog.setArguments(args);
+        FragmentManager fm = getFragmentManager();
+        dialog.show(fm, "choloris");
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -199,4 +240,36 @@ public class RollDiceActivity extends Activity {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
+
+    private void executeShakeAction() {
+        rollDices();
+    }
+
+    private SensorManager mSensorManager;
+    private float mAccel; // acceleration apart from gravity
+    private float mAccelCurrent; // current acceleration including gravity
+    private float mAccelLast; // last acceleration including gravity
+
+    private final SensorEventListener mSensorListener = new SensorEventListener() {
+
+        public void onSensorChanged(SensorEvent se) {
+            float x = se.values[0];
+            float y = se.values[1];
+            float z = se.values[2];
+            mAccelLast = mAccelCurrent;
+            mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
+            float delta = mAccelCurrent - mAccelLast;
+            mAccel = mAccel * 0.9f + delta; // perform low-cut filter
+
+            if (mAccel > 12) {
+                rollDices();
+            }
+
+        }
+
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        }
+    };
+
+
 }
