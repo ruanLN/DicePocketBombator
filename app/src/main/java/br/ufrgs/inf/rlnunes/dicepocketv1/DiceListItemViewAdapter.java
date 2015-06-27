@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +51,7 @@ public class DiceListItemViewAdapter extends ArrayAdapter<Dice> {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.dice_list_item_view, parent, false);
-        TextView textView = (TextView) rowView.findViewById(R.id.textView);
+        TextView valor = (TextView) rowView.findViewById(R.id.textView2);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
         switch(dices.get(position).getnFaces()) {
             case 20:
@@ -62,20 +64,43 @@ public class DiceListItemViewAdapter extends ArrayAdapter<Dice> {
                 imageView.setImageResource(R.drawable.d4);
                 break;
             default:
-                imageView.setImageResource(R.drawable.d6);                
+                imageView.setImageResource(R.drawable.d6);
         }
-        textView.setText(dices.get(position).toString());
+        if(dices.get(position).getValue() == -1) {
+            valor.setText("Nao jogado");
+        } else {
+            valor.setText("valor: " + dices.get(position).getValue());
+        }
 
 
         Button btn = (Button) rowView.findViewById(R.id.remove);
         btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(getContext(), dices.get(position).toString(), Toast.LENGTH_LONG).show();
                 dices.remove(position);
                 adapter.notifyDataSetChanged();
             }
         });
 
+        CheckBox chk = (CheckBox) rowView.findViewById(R.id.checkBox);
+        chk.setChecked(dices.get(position).isActive());
+        chk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CheckBox check = (CheckBox) v;
+                dices.get(position).setActive(check.isChecked());
+                //adapter.notifyDataSetChanged();
+            }
+        });
+
         return rowView;
+    }
+
+    public void roolDices() {
+        for(Dice dice : dices) {
+            if(dice.isActive()) {
+                dice.roll();
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 }

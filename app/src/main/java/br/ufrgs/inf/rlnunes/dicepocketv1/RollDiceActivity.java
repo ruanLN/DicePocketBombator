@@ -43,19 +43,19 @@ public class RollDiceActivity extends FragmentActivity {
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
      */
-    private static final boolean AUTO_HIDE = true;
+    private static final boolean AUTO_HIDE = false;
 
     /**
      * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
      * user interaction before hiding the system UI.
      */
-    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
+    private static final int AUTO_HIDE_DELAY_MILLIS = 30000;
 
     /**
      * If set, will toggle the system UI visibility upon interaction. Otherwise,
      * will show the system UI visibility upon interaction.
      */
-    private static final boolean TOGGLE_ON_CLICK = true;
+    private static final boolean TOGGLE_ON_CLICK = false;
 
     /**
      * The flags to pass to {@link SystemUiHider#getInstance}.
@@ -190,17 +190,9 @@ public class RollDiceActivity extends FragmentActivity {
         // while interacting with the UI.
         //findViewById(R.id.roll_button).setOnTouchListener(mDelayHideTouchListener);
     }
-    DialogFragment dialog;
-    private void rollDices() {
-        Bundle args = new Bundle();
-        args.putSerializable("dices", dices);
-        if(dialog != null) {
 
-        }
-        dialog = new ShowDicesDialogFragment();
-        dialog.setArguments(args);
-        FragmentManager fm = getFragmentManager();
-        dialog.show(fm, "choloris");
+    private void rollDices() {
+        adapter.roolDices();
     }
 
     @Override

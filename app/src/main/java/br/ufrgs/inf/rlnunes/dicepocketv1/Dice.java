@@ -1,7 +1,5 @@
 package br.ufrgs.inf.rlnunes.dicepocketv1;
 
-import android.os.Parcelable;
-
 import java.io.Serializable;
 import java.util.Random;
 
@@ -10,13 +8,18 @@ import java.util.Random;
  */
 public class Dice implements Serializable{
     private int nFaces;
+    private int value;
+    private boolean active;
     public Dice(int nf) {
         this.nFaces = nf;
+        this.setValue(-1);
+        this.setActive(true);
     }
 
     public int roll() {
         Random randomizer = new Random();
-        return randomizer.nextInt(nFaces) + 1;
+        this.value = randomizer.nextInt(nFaces) + 1;
+        return value;
     }
 
     public void setnFaces(int nf) {
@@ -29,5 +32,21 @@ public class Dice implements Serializable{
 
     public String toString() {
         return "Faces: " + nFaces;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
